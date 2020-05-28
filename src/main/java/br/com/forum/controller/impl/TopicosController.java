@@ -38,7 +38,7 @@ import br.com.forum.service.ITopicosService;
 @RequestMapping(Constants.ROOT_URL + Constants.V1 + "/topicos")
 public class TopicosController implements ITopicosController {
 
-	private static final String CACHE_LIST_TOPICOS = "listTopicos";
+	private static final String CACHE_LIST_TOPICOS = "listaTopicos";
 	private static final String CACHE_TOPICO = "topico";
 	
 	@Autowired
