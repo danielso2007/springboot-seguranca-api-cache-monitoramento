@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.0.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>br.com.forum</groupId>
+	<artifactId>forum</artifactId>
+	<version>0.0.0-SNAPSHOT</version>
+
+	<name>forum</name>
+	<description>Demo project for Spring Boot</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>11</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+
+		<spring.profiles.active>dev</spring.profiles.active>
+
+		<skip-tests>true</skip-tests>
+		<project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
+		<junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
+		<test.suites>**/SuiteTest</test.suites>
+
+		<debug.properties>false</debug.properties>
+		<trace.properties>false</trace.properties>
+
+		<port>8080</port>
+
+		<driver-class-name>org.h2.Driver</driver-class-name>
+		<db.url>jdbc:h2:mem:forumdb;DB_CLOSE_ON_EXIT=FALSE</db.url>
+		<db.username>sa</db.username>
+		<db.password></db.password>
+		<db.database-platform>org.hibernate.dialect.H2Dialect</db.database-platform>
+		<db.show_sql>true</db.show_sql>
+		<db.ddl-auto>none</db.ddl-auto>
+	</properties>
+
+	<dependencies>
+		<!-- Removendo o Tomcat para usar o Undertow -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- Undertow é um servidor Web de desempenho flexível, escrito em java -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>io.undertow</groupId>
+					<artifactId>undertow-websockets-jsr</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.tomcat</groupId>
+					<artifactId>tomcat-jdbc</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<defaultGoal>package</defaultGoal>
+		<directory>${basedir}/target</directory>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.yml</include>
+					<include>**/*.xml</include>
+					<include>**/*.html</include>
+					<include>**/*.sql</include>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<release>${java.version}</release>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- Force alphabetical order to have a reproducible build -->
+					<runOrder>alphabetical</runOrder>
+					<reportsDirectory>${junit.utReportFolder}</reportsDirectory>
+					<skipTests>${skip-tests}</skipTests>
+					<workingDirectory>${project.build.directory}</workingDirectory>
+					<trimStackTrace>false</trimStackTrace>
+					<forkCount>5</forkCount>
+					<threadCount>5</threadCount>
+					<reuseForks>false</reuseForks>
+					<parallel>classes</parallel>
+					<perCoreThreadCount>true</perCoreThreadCount>
+					<useUnlimitedThreads>false</useUnlimitedThreads>
+					<includes>
+						<include>${test.suites}</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version><!--$NO-MVN-MAN-VER$ -->
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<delimiters>
+						<delimiter>@</delimiter>
+					</delimiters>
+					<useDefaultDelimiters>false</useDefaultDelimiters>
+				</configuration>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/docker</directory>
+									<filtering>true</filtering>
+								</resource>
+								<resource>
+									<directory>src/main/script</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>test</id>
+			<properties>
+				<debug.properties>false</debug.properties>
+				<trace.properties>false</trace.properties>
+				<spring.profiles.active>test</spring.profiles.active>
+				<skip-tests>false</skip-tests>
+				<driver-class-name>org.h2.Driver</driver-class-name>
+				<db.url>jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE</db.url>
+				<db.username>sa</db.username>
+				<db.password></db.password>
+				<db.database-platform>org.hibernate.dialect.H2Dialect</db.database-platform>
+				<db.show_sql>false</db.show_sql>
+				<db.ddl-auto>update</db.ddl-auto>
+			</properties>
+		</profile>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<spring.profiles.active>dev</spring.profiles.active>
+				<skip-tests>true</skip-tests>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<debug.properties>false</debug.properties>
+				<trace.properties>false</trace.properties>
+				<spring.profiles.active>test</spring.profiles.active>
+				<skip-tests>false</skip-tests>
+			</properties>
+		</profile>
+	</profiles>
+
+	<repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<developers>
+		<developer>
+			<id>danielso2007</id>
+			<name>Daniel Oliveira</name>
+			<email>danielso2007@gmail.com</email>
+			<organization>Em casa</organization>
+			<roles>
+				<role>Project Lead</role>
+			</roles>
+		</developer>
+	</developers>
+
+</project>
