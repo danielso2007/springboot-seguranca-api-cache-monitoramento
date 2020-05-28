@@ -69,13 +69,15 @@ public class TopicosService implements ITopicosService {
 		return topicoRepository.save(original);
 	}
 
+	@Transactional
 	@Override
 	public void delete(Long id) throws EntityNotFoundException {
 		Optional<Topico> optional = topicoRepository.findById(id);
 		if (optional.isPresent()) {
 			topicoRepository.deleteById(id);
+		} else {
+			throw new EntityNotFoundException();
 		}
-		throw new EntityNotFoundException();
 	}
 
 }
