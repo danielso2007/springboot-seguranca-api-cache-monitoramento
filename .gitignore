@@ -22,7 +22,7 @@ logs/**
 *.iws
 *.iml
 *.ipr
-
+*-lock.json
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
