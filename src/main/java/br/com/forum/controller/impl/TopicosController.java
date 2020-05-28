@@ -6,6 +6,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -36,10 +38,14 @@ import br.com.forum.service.ITopicosService;
 @RequestMapping(Constants.ROOT_URL + Constants.V1 + "/topicos")
 public class TopicosController implements ITopicosController {
 
+	private static final String CACHE_LIST_TOPICOS = "listTopicos";
+	private static final String CACHE_TOPICO = "topico";
+	
 	@Autowired
 	private ITopicosService service;
 
 	@GetMapping
+	@Cacheable(value = CACHE_LIST_TOPICOS)
 	@Override
 	public Page<TopicoDto> list(@RequestParam(required = false) String nomeCurso,
 			@PageableDefault(
@@ -69,6 +75,7 @@ public class TopicosController implements ITopicosController {
 	}
 	
 	@GetMapping("/{id}")
+	@Cacheable(value = CACHE_TOPICO)
 	@Override
 	public ResponseEntity<DetalhesDoTopicoDto> findById(@PathVariable Long id) {
 		try {
@@ -79,6 +86,7 @@ public class TopicosController implements ITopicosController {
 	}
 
 	@PostMapping
+	@CacheEvict(allEntries = true, value = {CACHE_LIST_TOPICOS, CACHE_TOPICO})
 	@Override
 	public ResponseEntity<TopicoDto> save(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
 		Topico entity = service.save(form);
@@ -87,6 +95,7 @@ public class TopicosController implements ITopicosController {
 	}
 
 	@PutMapping("/{id}")
+	@CacheEvict(allEntries = true, value = {CACHE_LIST_TOPICOS, CACHE_TOPICO})
 	@Override
 	public ResponseEntity<TopicoDto> update(@PathVariable Long id, @RequestBody @Valid TopicoForm form) {
 		try {
@@ -97,6 +106,7 @@ public class TopicosController implements ITopicosController {
 	}
 
 	@DeleteMapping("/{id}")
+	@CacheEvict(allEntries = true, value = {CACHE_LIST_TOPICOS, CACHE_TOPICO})
 	@Override
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		try {

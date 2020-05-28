@@ -74,6 +74,7 @@ public class TopicosService implements ITopicosService {
 		throw new EntityNotFoundException();
 	}
 
+	@Transactional
 	@Override
 	public Topico save(TopicoForm form) {
 		return save(form.converter(cursoRepository));
@@ -85,6 +86,7 @@ public class TopicosService implements ITopicosService {
 		return topicoRepository.save(entity);
 	}
 
+	@Transactional
 	@Override
 	public Topico update(Long id, TopicoForm form) {
 		return update(id, form.converter(cursoRepository));
