@@ -1,12 +1,15 @@
 package br.com.forum.controller.impl;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -37,13 +41,33 @@ public class TopicosController implements ITopicosController {
 
 	@GetMapping
 	@Override
-	public List<TopicoDto> list(String nomeCurso) {
+	public Page<TopicoDto> list(@RequestParam(required = false) String nomeCurso,
+			@PageableDefault(
+					page = Constants.DEFAULT_INT_PAGE,
+					size = Constants.DEFAULT_INT_SIZE,
+					sort = {Constants.DEFAULT_SORT_COLUMN},
+					direction = Direction.ASC) Pageable pageable) {
 		if (nomeCurso == null) {
-			return TopicoDto.converter(service.findAll());
+			return TopicoDto.converter(service.findAll(pageable));
 		}
-		return TopicoDto.converter(service.findByCursoNome(nomeCurso));
+		return TopicoDto.converter(service.findByCursoNome(nomeCurso, pageable));
 	}
-
+	
+	//TODO: Remover depois.
+	@Deprecated
+	@Override
+	public Page<TopicoDto> list(
+			@RequestParam(required = false) String nomeCurso,
+			@RequestParam( defaultValue = Constants.DEFAULT_PAGE) int page,
+			@RequestParam( defaultValue = Constants.DEFAULT_SIZE) int size,
+			@RequestParam(required = false, defaultValue = Constants.EMPTY) String sort,
+			@RequestParam(required = false, defaultValue = Constants.EMPTY) String direction) {
+		if (nomeCurso == null) {
+			return TopicoDto.converter(service.findAll(page, size, sort, direction));
+		}
+		return TopicoDto.converter(service.findByCursoNome(nomeCurso, page, size, sort, direction));
+	}
+	
 	@GetMapping("/{id}")
 	@Override
 	public ResponseEntity<DetalhesDoTopicoDto> findById(@PathVariable Long id) {

@@ -57,4 +57,72 @@ public class DetalhesDoTopicoDto {
 		return respostas;
 	}
 
+	public static Builder Builder() {
+		return new Builder();
+	}
+
+	public static class Builder {
+
+		private Long id;
+		private String titulo;
+		private String mensagem;
+		private LocalDateTime dataCriacao;
+		private String nomeAutor;
+		private StatusTopico status;
+		private List<RespostaDto> respostas;
+
+		public Builder() {
+		}
+
+		public Builder id(Long value) {
+			this.id = value;
+			return this;
+		}
+
+		public Builder titulo(String value) {
+			this.titulo = value;
+			return this;
+		}
+
+		public Builder mensagem(String value) {
+			this.mensagem = value;
+			return this;
+		}
+
+		public Builder id(LocalDateTime value) {
+			this.dataCriacao = value;
+			return this;
+		}
+
+		public Builder nomeAutor(String value) {
+			this.nomeAutor = value;
+			return this;
+		}
+
+		public Builder status(StatusTopico value) {
+			this.status = value;
+			return this;
+		}
+
+		public Builder respostas(List<RespostaDto> value) {
+			this.respostas = value;
+			return this;
+		}
+
+		public DetalhesDoTopicoDto build() {
+			return new DetalhesDoTopicoDto(this);
+		}
+
+	}
+
+	private DetalhesDoTopicoDto(Builder builder) {
+		id = builder.id;
+		titulo = builder.titulo;
+		mensagem = builder.mensagem;
+		dataCriacao = builder.dataCriacao;
+		nomeAutor = builder.nomeAutor;
+		status = builder.status;
+		respostas = builder.respostas;
+	}
+
 }

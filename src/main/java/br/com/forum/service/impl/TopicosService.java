@@ -1,14 +1,19 @@
 package br.com.forum.service.impl;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.forum.config.Constants;
 import br.com.forum.controller.form.TopicoForm;
 import br.com.forum.entity.Topico;
 import br.com.forum.repository.CursoRepository;
@@ -25,14 +30,39 @@ public class TopicosService implements ITopicosService {
 	@Autowired
 	private CursoRepository cursoRepository;
 
+	private Pageable createPageable(int page, int size, String sort, String direction) {
+		Direction direct = Direction.ASC;
+		Sort sortBy = Sort.by(direct, Constants.DEFAULT_SORT_COLUMN);
+		
+		if (direction != null && direction.equalsIgnoreCase("desc")) {
+			direct = Direction.DESC;
+		}
+		
+		if (sort != null && !sort.isEmpty()) {
+			sortBy = Sort.by(direct, sort);
+		}
+		
+		return PageRequest.of(page, size, sortBy);
+	}
+	
 	@Override
-	public List<Topico> findAll() {
-		return topicoRepository.findAll();
+	public Page<Topico> findAll(Pageable pageable) {
+		return topicoRepository.findAll(pageable);
 	}
 
 	@Override
-	public List<Topico> findByCursoNome(String nomeCurso) {
-		return topicoRepository.findByCursoNome(nomeCurso);
+	public Page<Topico> findByCursoNome(String nomeCurso, Pageable pageable) {
+		return topicoRepository.findByCursoNomeIgnoreCase(nomeCurso, pageable);
+	}
+	
+	@Override
+	public Page<Topico> findAll(int page, int size, String sort, String direction) {
+		return topicoRepository.findAll(createPageable(page, size, sort, direction));
+	}
+
+	@Override
+	public Page<Topico> findByCursoNome(String nomeCurso, int page, int size, String sort, String direction) {
+		return topicoRepository.findByCursoNomeIgnoreCase(nomeCurso, createPageable(page, size, sort, direction));
 	}
 
 	@Override

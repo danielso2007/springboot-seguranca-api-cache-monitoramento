@@ -1,9 +1,9 @@
 package br.com.forum.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -13,7 +13,8 @@ import br.com.forum.controller.form.TopicoForm;
 
 public interface ITopicosController {
 
-	List<TopicoDto> list(String nomeCurso);
+	Page<TopicoDto> list(String nomeCurso, Pageable pageable);
+	Page<TopicoDto> list(String nomeCurso, int page, int size, String sort, String direction);
 	ResponseEntity<DetalhesDoTopicoDto> findById(Long id);
 	ResponseEntity<TopicoDto> save(@Valid TopicoForm form, UriComponentsBuilder uriBuilder);
 	ResponseEntity<TopicoDto> update(Long id, @Valid TopicoForm form);
