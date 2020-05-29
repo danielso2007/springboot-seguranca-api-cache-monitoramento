@@ -1,20 +1,29 @@
 package br.com.forum.entity;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-public class Usuario {
+public class Usuario implements UserDetails {
+
+	private static final long serialVersionUID = 8295243378138660118L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +43,8 @@ public class Usuario {
 	@Length(min = 3, message = "A senha deve ter no mínimo 5 caracteres")
 	@Column(nullable = false)
 	private String senha;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Perfil> perfis = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -67,6 +78,14 @@ public class Usuario {
 		this.senha = senha;
 	}
 
+	public List<Perfil> getPerfis() {
+		return perfis;
+	}
+
+	public void setPerfis(List<Perfil> perfis) {
+		this.perfis = perfis;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(email, id, nome, senha);
@@ -88,6 +107,41 @@ public class Usuario {
 	@Override
 	public String toString() {
 		return String.format("Usuario [id=%s, nome=%s, email=%s, senha=%s]", id, nome, email, senha);
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+		return getSenha();
+	}
+
+	@Override
+	public String getUsername() {
+		return getEmail();
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return Boolean.TRUE;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return Boolean.TRUE;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return Boolean.TRUE;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return Boolean.TRUE;
 	}
 
 }

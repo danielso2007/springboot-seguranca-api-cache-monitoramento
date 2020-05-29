@@ -1,10 +1,22 @@
-INSERT INTO USUARIO(nome, email, senha) VALUES('Aluno', 'aluno@email.com', 'P0o9i8u7');
-INSERT INTO USUARIO(nome, email, senha) VALUES('Milena Luana Santos', 'milenaluanasantos-88@ramiresmotors.com.br', 'P0o9i8u7');
-INSERT INTO USUARIO(nome, email, senha) VALUES('Murilo Thales Gabriel Novaes', 'murilothalesgabrielnovaes__murilothalesgabrielnovaes@mmetalica.com.br', 'yhJZqo5uYB');
-INSERT INTO USUARIO(nome, email, senha) VALUES('Ruan Juan Ribeiro', 'ruanjuanribeiro__ruanjuanribeiro@lojaprincezinha.com.br', 'oln0z0cTCd');
-INSERT INTO USUARIO(nome, email, senha) VALUES('Lucas Henrique Julio da Luz', 'lucashenriquejuliodaluz_@fpsgeodata.com.br', 'eUPuu85LfT');
-INSERT INTO USUARIO(nome, email, senha) VALUES('Catarina Giovanna Brenda Rocha', 'ccatarinagiovannabrendarocha@mpc.com.br', 'fT9Sbk9lBC');
-INSERT INTO USUARIO(nome, email, senha) VALUES('Nair Laura Mendes', 'nairlauramendes_@email.com', 'ZlQO60H0td');
+INSERT INTO USUARIO(nome, email, senha) VALUES('Aluno', 'aluno@email.com', '$2a$10$1eP5B7ewr2cToBdJG379AOG1GkR8Pm5cn.yTfXENegKyEsykegGfq');
+INSERT INTO USUARIO(nome, email, senha) VALUES('Administrador', 'admin@email.com', '$2a$10$1eP5B7ewr2cToBdJG379AOG1GkR8Pm5cn.yTfXENegKyEsykegGfq');
+INSERT INTO USUARIO(nome, email, senha) VALUES('Murilo Thales Gabriel Novaes', 'murilothalesgabrielnovaes__murilothalesgabrielnovaes@mmetalica.com.br', '$2a$10$1eP5B7ewr2cToBdJG379AOG1GkR8Pm5cn.yTfXENegKyEsykegGfq');
+INSERT INTO USUARIO(nome, email, senha) VALUES('Ruan Juan Ribeiro', 'ruanjuanribeiro__ruanjuanribeiro@lojaprincezinha.com.br', '$2a$10$1eP5B7ewr2cToBdJG379AOG1GkR8Pm5cn.yTfXENegKyEsykegGfq');
+INSERT INTO USUARIO(nome, email, senha) VALUES('Lucas Henrique Julio da Luz', 'lucashenriquejuliodaluz_@fpsgeodata.com.br', '$2a$10$1eP5B7ewr2cToBdJG379AOG1GkR8Pm5cn.yTfXENegKyEsykegGfq');
+INSERT INTO USUARIO(nome, email, senha) VALUES('Catarina Giovanna Brenda Rocha', 'ccatarinagiovannabrendarocha@mpc.com.br', '$2a$10$1eP5B7ewr2cToBdJG379AOG1GkR8Pm5cn.yTfXENegKyEsykegGfq');
+INSERT INTO USUARIO(nome, email, senha) VALUES('Nair Laura Mendes', 'nairlauramendes_@email.com', '$2a$10$1eP5B7ewr2cToBdJG379AOG1GkR8Pm5cn.yTfXENegKyEsykegGfq');
+
+INSERT INTO PERFIL(nome) VALUES('USER');
+INSERT INTO PERFIL(nome) VALUES('ADMIN');
+
+INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(1,1);
+INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(3,1);
+INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(4,1);
+INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(5,1);
+INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(6,1);
+INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(7,1);
+
+INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(2,2);
 
 INSERT INTO CURSO(nome, categoria) VALUES('Spring Boot', 'Programação');
 INSERT INTO CURSO(nome, categoria) VALUES('HTML 5', 'Front-end');

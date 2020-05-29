@@ -35,7 +35,7 @@ import br.com.forum.service.ITopicosService;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(Constants.ROOT_URL + Constants.V1 + "/topicos")
+@RequestMapping(Constants.TOPICOS)
 public class TopicosController implements ITopicosController {
 
 	private static final String CACHE_LIST_TOPICOS = "listaTopicos";
