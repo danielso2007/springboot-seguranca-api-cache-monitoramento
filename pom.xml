@@ -13,7 +13,7 @@
 
 	<groupId>br.com.forum</groupId>
 	<artifactId>forum</artifactId>
-	<version>0.0.0-SNAPSHOT</version>
+	<version>0.1.0</version>
 
 	<name>forum</name>
 	<description>Demo project for Spring Boot</description>
