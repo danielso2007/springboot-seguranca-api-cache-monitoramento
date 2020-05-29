@@ -16,6 +16,7 @@ INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(5,1);
 INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(6,1);
 INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(7,1);
 
+INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(2,1);
 INSERT INTO USUARIO_PERFIS(usuario_id, perfis_id) VALUES(2,2);
 
 INSERT INTO CURSO(nome, categoria) VALUES('Spring Boot', 'Programação');

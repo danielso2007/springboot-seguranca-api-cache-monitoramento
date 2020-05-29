@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonRootName;
+
+import br.com.forum.enumerator.Roles;
 
 @Entity
 @JsonRootName(value = "perfil")
@@ -35,11 +39,12 @@ public class Perfil implements GrantedAuthority {
 	@NotEmpty(message = "O nome não pode ser vazio")
 	@Length(min = 5, message = "O nome deve ter no mínimo 5 caracteres")
 	@Column(nullable = false)
-	private String nome;
+	@Enumerated(EnumType.STRING)
+	private Roles nome;
 
 	@Override
 	public String getAuthority() {
-		return null;
+		return nome.toString();
 	}
 
 	public Long getId() {
@@ -50,17 +55,21 @@ public class Perfil implements GrantedAuthority {
 		this.id = id;
 	}
 
-	public String getNome() {
+	public Roles getNome() {
 		return nome;
 	}
 
-	public void setNome(String nome) {
+	public void setNome(Roles nome) {
 		this.nome = nome;
+	}
+	
+	public String getRole() {
+		return nome.toString();
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, nome);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -72,7 +81,7 @@ public class Perfil implements GrantedAuthority {
 			return false;
 		}
 		Perfil other = (Perfil) obj;
-		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
+		return Objects.equals(id, other.id);
 	}
 
 	@Override
