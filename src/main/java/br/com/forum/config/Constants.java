@@ -10,6 +10,7 @@ public final class Constants {
 	public static final String ROOT_URL = "/api";
 	
 	public static final String TOPICOS = Constants.ROOT_URL + Constants.V1 + "/topicos";
+	public static final String AUTH = Constants.ROOT_URL + Constants.V1 + "/auth";
 	
 	public static final String DEFAULT_PAGE = "0";
 	public static final String DEFAULT_SIZE = "5";

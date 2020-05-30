@@ -1,3 +1,6 @@
+jwt:
+    secret: '8`uECI75Ow{k&{[0&EsLZWA}AC&Cp<%SegxCg^K@74PB{zW(u!fPDJ1n}=#6&-4'
+    expiration: 28800000
 spring:
     profiles:
         active: '${PROJECT_PROFILE:@spring.profiles.active@}'
@@ -54,7 +57,7 @@ logging:
             jboss: warn
         br:
             com:
-                forum: warn
+                forum: info
         io:
             undertow: warn
         com:
