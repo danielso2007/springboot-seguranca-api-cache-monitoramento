@@ -6,6 +6,9 @@ public final class Constants {
 	public static final String BLANK = " ";
 	public static final String PACKAGE = "br.com.forum";
 	
+	public static final String APPLICATION_JSON_UTF_8 = "application/json;charset=utf-8";
+	public static final String APPLICATION_XML_UTF_8 = "application/xml;charset=utf-8";
+	
 	public static final String V1 = "/v1";
 	public static final String ROOT_URL = "/api";
 	

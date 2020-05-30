@@ -1,3 +1,6 @@
 spring:
     profiles:
         active: test
+jwt:
+    secret: '8`uYNN563w{k&{[0&EsLZWA}AC&Cp<%SegxCg^K@74PB{zW(u!fPDJ1n}=#6&-9'
+    expiration: 28800000

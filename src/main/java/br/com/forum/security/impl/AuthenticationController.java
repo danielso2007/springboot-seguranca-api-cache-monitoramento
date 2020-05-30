@@ -38,6 +38,7 @@ public class AuthenticationController implements IAuthenticationController {
 	private ITokenService tokenService;
 
 	@PostMapping
+	@Override
 	public ResponseEntity<?> authenticate(@RequestBody @Valid JwtRequest authenticationRequest) {
 		try {
 			String token = tokenService.generateToken((UserDetails) authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword()).getPrincipal());

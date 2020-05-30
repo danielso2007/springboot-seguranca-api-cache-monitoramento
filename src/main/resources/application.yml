@@ -1,64 +1,94 @@
 jwt:
-    secret: '8`uECI75Ow{k&{[0&EsLZWA}AC&Cp<%SegxCg^K@74PB{zW(u!fPDJ1n}=#6&-4'
-    expiration: 28800000
+  secret: '8`uECI75Ow{k&{[0&EsLZWA}AC&Cp<%SegxCg^K@74PB{zW(u!fPDJ1n}=#6&-4'
+  expiration: 28800000
 spring:
-    profiles:
-        active: '${PROJECT_PROFILE:@spring.profiles.active@}'
-    datasource:
-        initialization-mode: always
-        platform: h2
-        driverClassName: '@driver-class-name@'
-        url: '${DB_URL:@db.url@}'
-        username: '${DB_USER:@db.username@}'
-        password: '${DB_PASSWORD:@db.password@}'
-        type: com.zaxxer.hikari.HikariDataSource
-        hikari:
-            connectionTimeout: 30000
-            idleTimeout: 600000
-            maxLifetime: 1800000
-            maximum-pool-size: 50
-            minimum-idle: 1
-    h2:
-        console:
-            enabled: true
-            path: /h2-console
-    jpa:
-        database-platform: '@db.database-platform@'
-        generate-ddl: false
-        open-in-view: true
-        show_sql: '${HOW_SQL:@db.show_sql@}'
-        hibernate:
-            ddl-auto: '@db.ddl-auto@'
-    application:
-        name: '@projet.artifactId@'
-    jackson:
-        date-format: 'yyyy-MM-dd HH:mm:ss'
-        default-property-inclusion: NON_NULL
-        locale: pt-BR
-        time-zone: America/Sao_Paulo
+  profiles:
+    active: '${PROJECT_PROFILE:@spring.profiles.active@}'
+  datasource:
+    initialization-mode: always
+    platform: h2
+    driverClassName: '@driver-class-name@'
+    url: '${DB_URL:@db.url@}'
+    username: '${DB_USER:@db.username@}'
+    password: '${DB_PASSWORD:@db.password@}'
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connectionTimeout: 30000
+      idleTimeout: 600000
+      maxLifetime: 1800000
+      maximum-pool-size: 50
+      minimum-idle: 1
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: '@db.database-platform@'
+    generate-ddl: false
+    open-in-view: true
+    show_sql: '${HOW_SQL:@db.show_sql@}'
+    hibernate:
+      ddl-auto: '@db.ddl-auto@'
+  application:
+    name: '@project.artifactId@'
+  boot:
+    admin:
+        client:
+            url: 'http://localhost:9091'
+  jackson:
+    date-format: 'yyyy-MM-dd HH:mm:ss'
+    default-property-inclusion: NON_NULL
+    locale: pt-BR
+    time-zone: America/Sao_Paulo
 debug: '${DEBUG:@debug.properties@}'
 trace: '${TRACE:@trace.properties@}'
 server:
-    compression:
-        enabled: true
-        min-response-size: 1
-    port: '${SERVER_PORT:@port@}'
-    undertow:
-        accesslog:
-            dir: logs
-            enabled: false
-            pattern: '%t %a "%r" %s (%D ms)'
+  compression:
+    enabled: true
+    min-response-size: 1
+  port: '${SERVER_PORT:@port@}'
+  undertow:
+    accesslog:
+      dir: logs
+      enabled: false
+      pattern: '%t %a "%r" %s (%D ms)'
 logging:
-    level:
-        org:
-            springframework: warn
-            hibernate: warn
-            xnio: warn
-            jboss: warn
-        br:
-            com:
-                forum: info
-        io:
-            undertow: warn
-        com:
-            zaxxer: {hikari: {HikariDataSource: warn}}
+  level:
+    org:
+      springframework: warn
+      hibernate: warn
+      xnio: warn
+      jboss: warn
+    br:
+      com:
+        forum: info
+    io:
+      undertow: warn
+    com:
+      zaxxer:
+        hikari:
+          HikariDataSource: warn
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+info:
+  app:
+    name: '@project.artifactId@'
+    description: '@project.description@'
+    version: '@project.version@'
+    encoding: '@project.build.sourceEncoding@'
+    java:
+      version: '@java.version@'
+springdoc:
+   swagger-ui:
+      path: /swagger-ui.html
+      enabled: ${SWAGGER_UI_ENABLED:@swagger-ui-enabled@}
+      operationsSorter: method
+   api-docs:
+      path: /api-docs
+      enabled: ${API_DOCS_ENABLED:@api-docs-enabled@}

@@ -35,6 +35,9 @@
 		<debug.properties>false</debug.properties>
 		<trace.properties>false</trace.properties>
 
+		<api-docs-enabled>true</api-docs-enabled>
+		<swagger-ui-enabled>true</swagger-ui-enabled>
+
 		<port>8080</port>
 
 		<driver-class-name>org.h2.Driver</driver-class-name>
@@ -123,6 +126,31 @@
 			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
 
+		<!-- OpenAPI 3 -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.3.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-webmvc-core</artifactId>
+			<version>1.3.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-data-rest</artifactId>
+			<version>1.3.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-security</artifactId>
+			<version>1.3.9</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -137,6 +165,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-starter-client</artifactId>
+			<version>2.2.3</version>
 		</dependency>
 
 		<dependency>
@@ -241,6 +275,37 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>pre-integration-test</id>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-integration-test</id>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-maven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -276,8 +341,10 @@
 			<properties>
 				<debug.properties>false</debug.properties>
 				<trace.properties>false</trace.properties>
-				<spring.profiles.active>test</spring.profiles.active>
+				<spring.profiles.active>prod</spring.profiles.active>
 				<skip-tests>false</skip-tests>
+				<api-docs-enabled>false</api-docs-enabled>
+				<swagger-ui-enabled>false</swagger-ui-enabled>
 			</properties>
 		</profile>
 	</profiles>

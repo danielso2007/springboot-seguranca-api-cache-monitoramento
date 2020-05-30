@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -40,32 +42,30 @@ public class TopicosController implements ITopicosController {
 
 	private static final String CACHE_LIST_TOPICOS = "listaTopicos";
 	private static final String CACHE_TOPICO = "topico";
-	
+
 	@Autowired
 	private ITopicosService service;
 
-	@GetMapping
 	@Cacheable(value = CACHE_LIST_TOPICOS)
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(produces = { Constants.APPLICATION_JSON_UTF_8, Constants.APPLICATION_XML_UTF_8 })
 	@Override
-	public Page<TopicoDto> list(@RequestParam(required = false) String nomeCurso,
-			@PageableDefault(
-					page = Constants.DEFAULT_INT_PAGE,
-					size = Constants.DEFAULT_INT_SIZE,
-					sort = {Constants.DEFAULT_SORT_COLUMN},
-					direction = Direction.ASC) Pageable pageable) {
+	public Page<TopicoDto> list(
+			@RequestParam(required = false) String nomeCurso,
+			@PageableDefault(page = Constants.DEFAULT_INT_PAGE, size = Constants.DEFAULT_INT_SIZE, sort = {
+					Constants.DEFAULT_SORT_COLUMN }, direction = Direction.ASC) Pageable pageable) {
 		if (nomeCurso == null) {
 			return TopicoDto.converter(service.findAll(pageable));
 		}
 		return TopicoDto.converter(service.findByCursoNome(nomeCurso, pageable));
 	}
-	
-	//TODO: Remover depois.
+
+	// TODO: Remover depois.
 	@Deprecated
 	@Override
-	public Page<TopicoDto> list(
-			@RequestParam(required = false) String nomeCurso,
-			@RequestParam( defaultValue = Constants.DEFAULT_PAGE) int page,
-			@RequestParam( defaultValue = Constants.DEFAULT_SIZE) int size,
+	public Page<TopicoDto> list(@RequestParam(required = false) String nomeCurso,
+			@RequestParam(defaultValue = Constants.DEFAULT_PAGE) int page,
+			@RequestParam(defaultValue = Constants.DEFAULT_SIZE) int size,
 			@RequestParam(required = false, defaultValue = Constants.EMPTY) String sort,
 			@RequestParam(required = false, defaultValue = Constants.EMPTY) String direction) {
 		if (nomeCurso == null) {
@@ -73,11 +73,13 @@ public class TopicosController implements ITopicosController {
 		}
 		return TopicoDto.converter(service.findByCursoNome(nomeCurso, page, size, sort, direction));
 	}
-	
-	@GetMapping("/{id}")
+
 	@Cacheable(value = CACHE_TOPICO)
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(value = "/{id}", produces = { Constants.APPLICATION_JSON_UTF_8, Constants.APPLICATION_XML_UTF_8 })
 	@Override
-	public ResponseEntity<DetalhesDoTopicoDto> findById(@PathVariable Long id) {
+	public ResponseEntity<DetalhesDoTopicoDto> findById(
+			@PathVariable Long id) {
 		try {
 			return ResponseEntity.ok(new DetalhesDoTopicoDto(service.findById(id)));
 		} catch (EntityNotFoundException e) {
@@ -85,19 +87,25 @@ public class TopicosController implements ITopicosController {
 		}
 	}
 
-	@PostMapping
-	@CacheEvict(allEntries = true, value = {CACHE_LIST_TOPICOS, CACHE_TOPICO})
+	@CacheEvict(allEntries = true, value = { CACHE_LIST_TOPICOS, CACHE_TOPICO })
+	@ResponseStatus(HttpStatus.CREATED)
+	@PostMapping(produces = { Constants.APPLICATION_JSON_UTF_8, Constants.APPLICATION_XML_UTF_8 })
 	@Override
-	public ResponseEntity<TopicoDto> save(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<TopicoDto> save(
+			@RequestBody @Valid TopicoForm form,
+			UriComponentsBuilder uriBuilder) {
 		Topico entity = service.save(form);
 		URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(entity.getId()).toUri();
 		return ResponseEntity.created(uri).body(new TopicoDto(entity));
 	}
 
-	@PutMapping("/{id}")
-	@CacheEvict(allEntries = true, value = {CACHE_LIST_TOPICOS, CACHE_TOPICO})
+	@CacheEvict(allEntries = true, value = { CACHE_LIST_TOPICOS, CACHE_TOPICO })
+	@ResponseStatus(HttpStatus.OK)
+	@PutMapping(value = "/{id}", produces = { Constants.APPLICATION_JSON_UTF_8, Constants.APPLICATION_XML_UTF_8 })
 	@Override
-	public ResponseEntity<TopicoDto> update(@PathVariable Long id, @RequestBody @Valid TopicoForm form) {
+	public ResponseEntity<TopicoDto> update(
+			@PathVariable Long id,
+			@RequestBody @Valid TopicoForm form) {
 		try {
 			return ResponseEntity.ok(new TopicoDto(service.update(id, form)));
 		} catch (EntityNotFoundException e) {
@@ -105,10 +113,12 @@ public class TopicosController implements ITopicosController {
 		}
 	}
 
-	@DeleteMapping("/{id}")
-	@CacheEvict(allEntries = true, value = {CACHE_LIST_TOPICOS, CACHE_TOPICO})
+	@CacheEvict(allEntries = true, value = { CACHE_LIST_TOPICOS, CACHE_TOPICO })
+	@ResponseStatus(HttpStatus.OK)
+	@DeleteMapping(value = "/{id}", produces = { Constants.APPLICATION_JSON_UTF_8, Constants.APPLICATION_XML_UTF_8 })
 	@Override
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	public ResponseEntity<?> delete(
+			@PathVariable Long id) {
 		try {
 			service.delete(id);
 			return ResponseEntity.ok().build();

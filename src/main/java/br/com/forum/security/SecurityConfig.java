@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -71,22 +72,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	// Configurações de autorização
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.httpBasic().and().authorizeRequests().antMatchers(HttpMethod.POST, Constants.AUTH).permitAll()
-				.antMatchers(HttpMethod.GET, PATH + "/**").hasAnyRole(Roles.ADMIN.toString(), Roles.USER.toString())
-				.antMatchers(HttpMethod.POST, PATH).hasRole(Roles.ADMIN.toString())
-				.antMatchers(HttpMethod.PUT, PATH + "/**").hasRole(Roles.ADMIN.toString())
-				.antMatchers(HttpMethod.PATCH, PATH + "/**").hasRole(Roles.ADMIN.toString())
-				.antMatchers(HttpMethod.DELETE, PATH + "/**").hasRole(Roles.ADMIN.toString()).anyRequest()
-				.authenticated();
+		httpSecurity.authorizeRequests().antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+				.antMatchers(HttpMethod.POST, Constants.AUTH).permitAll().antMatchers(HttpMethod.GET, PATH + "/**")
+				.hasAnyRole(Roles.ADMIN.toString(), Roles.USER.toString()).antMatchers(HttpMethod.POST, PATH)
+				.hasRole(Roles.ADMIN.toString()).antMatchers(HttpMethod.PUT, PATH + "/**")
+				.hasRole(Roles.ADMIN.toString()).antMatchers(HttpMethod.PATCH, PATH + "/**")
+				.hasRole(Roles.ADMIN.toString()).antMatchers(HttpMethod.DELETE, PATH + "/**")
+				.hasRole(Roles.ADMIN.toString()).anyRequest().authenticated();
 		httpSecurity.csrf().disable();
 		httpSecurity.formLogin().disable();
 		// Certifique-se de usar a sessão sem estado; sessão não será usada para
-		// armazenar o estado do usuário.	
+		// armazenar o estado do usuário.
 		httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		httpSecurity.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
 		httpSecurity.headers().frameOptions().disable();
 		// Adicione um filtro para validar os tokens a cada solicitação.
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	}
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/api-docs", "/api-docs/swagger-config/**", "/swagger-resources/**",
+				"/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-ui/**");
 	}
 
 }
