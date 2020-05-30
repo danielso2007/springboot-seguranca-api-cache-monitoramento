@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/danielso2007/virtualLibraryAPI/compare/v0.1.0...v0.2.0) (2020-05-30)
+
+
+### Features
+
+* Autenticação por JWT. ([6efe850](https://github.com/danielso2007/virtualLibraryAPI/commit/6efe85092324f4bdf81f66075733e192a1048afd))
+
 ## 0.1.0 (2020-05-29)
 
 
