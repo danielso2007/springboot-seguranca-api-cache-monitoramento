@@ -13,7 +13,7 @@
 
 	<groupId>br.com.forum</groupId>
 	<artifactId>forum</artifactId>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 
 	<name>forum</name>
 	<description>Demo project for Spring Boot</description>
@@ -132,6 +132,11 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<dependency>
