@@ -1,6 +1,6 @@
 {
   "name": "springboot-seguranca-api-cache-monitoramento",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Springboot Segurança API Cache Monitoramento.",
   "scripts": {
     "release": "standard-version",

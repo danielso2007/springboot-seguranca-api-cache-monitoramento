@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/danielso2007/virtualLibraryAPI/compare/v0.2.0...v1.0.0) (2020-05-30)
+
+
+### Features
+
+* Autenticação com JWT, Monitoramento Actuator e Swagger OpenAPI 3. ([1074cae](https://github.com/danielso2007/virtualLibraryAPI/commit/1074caeb4635bf130b5e37e25ff27c2604f21806))
+
 ## [0.2.0](https://github.com/danielso2007/virtualLibraryAPI/compare/v0.1.0...v0.2.0) (2020-05-30)
 
 
